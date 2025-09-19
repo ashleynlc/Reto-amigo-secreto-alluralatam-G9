@@ -23,9 +23,5 @@ JavaScript: Para toda la lógica interactiva de la aplicación.
 
 Canvas-Confetti: Una librería de JavaScript para el efecto de confeti.
 
-🚀 Cómo Empezar
-Clona el repositorio:
-
-
 ✍️ Contribución
-Este proyecto fue desarrollado por Ashley Calcaño con la ayuda de Allura Latam.
+Este proyecto fue desarrollado por Ashley L. Calcaño con la ayuda de Allura Latam.
