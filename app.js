@@ -1,202 +1,72 @@
-:root {
-    --color-primary: #d13e8f;
-    --color-secondary: #FFF9EB;
-    --color-tertiary: #C4C4C4;
-    --color-button: #D25D5D;
-    --color-button-hover: #E7D3D3;
-    --color-text: #444444;
-    --color-white: #FFFFFF;
+const inputAmigo = document.getElementById("amigo");
+const listaAmigos = [];
+const ulListaAmigos = document.getElementById("listaAmigos");
+const ulResultado = document.getElementById("resultado");
+
+function agregarAmigo() {
+    listaAmigos.push(inputAmigo.value);
+    ulListaAmigos.innerHTML= ulListaAmigos.innerHTML + `<li>${inputAmigo.value}</li>`;
 }
 
-/* Estilos generales */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+function sortearAmigo() {
+const random = Math.floor(Math.random() * listaAmigos.length);
+const amigoSecreto = listaAmigos[random];
+ulResultado.innerHTML = `<li>Tu amigo secreto es: ${amigoSecreto}</li>`;
+ // Lanza confetti
+    confetti({
+        particleCount: 1500,
+        spread: 100,
+        origin: { y: 0.6 }
+    });
+
 }
 
-body {
-    height: 100vh;
-    background-color: var(--color-primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+function reiniciar() {
+    listaAmigos.length = 0;
+    ulListaAmigos.innerHTML = "";
+    ulResultado.innerHTML = "";
+    inputAmigo.value = "";
 }
 
-.main-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
+function agregarAmigo() {
+    // 1. Obtiene el nombre y elimina los espacios en blanco innecesarios.
+    const nombre = inputAmigo.value.trim();
+
+    // 2. Verifica que el nombre no esté vacío.
+    if (nombre) {
+        // 3. Agrega el nombre al arreglo de amigos.
+        listaAmigos.push(nombre);
+        
+        // 4. Agrega el nombre a la lista visible en el HTML, con el botón de eliminar.
+        ulListaAmigos.innerHTML = ulListaAmigos.innerHTML + `<li id="${nombre}">${nombre} <button onclick="eliminarAmigo('${nombre}')" class="button-delete">X</button></li>`;
+
+        // 5. Borra automáticamente el contenido del campo de texto. ✅
+        inputAmigo.value = "";
+    } else {
+        // 6. Muestra una alerta si el usuario intenta agregar un nombre vacío.
+        alert("Por favor, introduce un nombre válido.");
+    }
+
+    
+    
 }
 
-/* Banner */
-.header-banner {
-    flex: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 0 0;
+function eliminarAmigo(nombre) {
+    // Elimina el nombre del arreglo
+    const index = listaAmigos.indexOf(nombre);
+    if (index > -1) {
+        listaAmigos.splice(index, 1);
+    }
+    // Elimina el elemento del DOM
+    const li = document.getElementById(nombre);
+    if (li) {
+        li.remove();
+    }
 }
 
-/* Sección de entrada */
-.input-section {
-    flex: 60%;
-    background-color: var(--color-secondary);
-    border: 1px solid #000;
-    border-radius: 64px 64px 0 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    width: 100%;
-}
-
-/* Títulos */
-.main-title {
-    font-size: 48px;
-    font-family: "Merriweather", serif;
-    font-weight: 900;
-    font-style: italic;
-    color: var(--color-white);
-}
-
-.section-title {
-    font-family: "Inter", serif;
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--color-primary);
-    margin: 10px 0;
-    text-align: center;
-}
-
-/* Contenedores de entrada y botón */
-.input-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 600px;
-    margin-top: 20px;
-}
-
-.input-name {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #000;
-    border-radius: 25px 0 0 25px;
-    font-size: 16px;
-}
-
-.button-container {
-    width: 300px;
-    justify-content: center;
-}
-
-/* Estilos de entrada de texto */
-.input-title {
-    flex: 1;
-    padding: 10px 15px;
-    font-size: 16px;
-    border: 2px solid #333;
-    border-right: none;
-    border-radius: 25px 0 0 25px;
-    font-family: "Merriweather", serif;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Estilos de botón */
-button {
-    padding: 15px 30px;
-    font-family: "Inter", sans-serif;
-    font-size: 16px;
-    border: 2px solid #000;
-    border-radius: 25px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-
-.button-add {
-    background-color: var(--color-tertiary);
-    color: var(--color-text);
-    border-radius: 0 25px 25px 0;
-}
-
-.button-add:hover {
-    background-color: #a1a1a1;
-}
-
-/* Listas */
-ul {
-    list-style-type: none;
-    color: #B9375D;
-    font-family: "Inter", sans-serif;
-    font-size: 20px;
-    margin: 20px 0;
-}
-
-.result-list {
-    margin-top: 15px;
-    color: #000000;
-    font-size: 22px;
-    font-weight: bold;
-    text-align: center;
-}
-
-/* Botón de sortear título */
-.button-draw {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 10px 40px;
-    color: var(--color-white);
-    background-color: var(--color-button);
-    font-size: 16px;
-}
-
-.button-draw img {
-    margin-right: 40px;
-}
-
-.button-draw:hover {
-    background-color: var(--color-button-hover);
-}
-
-.footer {
-    background-color: #E7D3D3;
-    text-align: center;
-    padding: 3px;
-    font-family: "Inter", sans-serif;
-    font-size: 10px;
-}
-
-.button-delete {
-    background-color: #471c34;
-    color: #fff;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-left: 10px;
-    transition: background 0.2s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-}
-
-.button-delete:hover {
-    background-color: #d31919;
-}
-
-/* Alinea el nombre y el botón en la misma línea y centra verticalmente */
-#listaAmigos li {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    margin-bottom: 8px;
-    padding: 4px 0;
-}
+inputAmigo.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        agregarAmigo();
+    }
+});
